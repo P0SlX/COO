@@ -7,11 +7,28 @@ public class Food implements Consumable {
     private double health;
 
     /**
-     * @param name
-     * @param health
+     * @param name:   name of the food
+     * @param health: amount of health the food gives
      */
     public Food(String name, double health) {
-        // TODO implement here
+        this.name = name;
+        this.health = health;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
     }
 
 }

@@ -6,8 +6,8 @@ import java.util.List;
  */
 public class Inventory {
 
-    private List<Equipment> equipments;
-    private List<Consumable> consumables;
+    private final List<Equipment> equipments;
+    private final List<Consumable> consumables;
 
     /**
      * Default constructor
@@ -18,24 +18,33 @@ public class Inventory {
     }
 
     /**
-     * @param obj
+     * @param obj: Equipment or Consumable
      */
     public void add(Object obj) {
-        // TODO implement here
+        if (obj instanceof Equipment) {
+            equipments.add((Equipment) obj);
+        } else if (obj instanceof Consumable) {
+            consumables.add((Consumable) obj);
+        }
     }
 
     /**
-     * @param obj
-     */
-    public void get(Object obj) {
-        // TODO implement here
-    }
-
-    /**
-     * @param obj
+     * @param obj: Equipment or Consumable
      */
     public void remove(Object obj) {
-        // TODO implement here
+        if (obj instanceof Equipment) {
+            equipments.remove(obj);
+        } else if (obj instanceof Consumable) {
+            consumables.remove(obj);
+        }
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+
+    public List<Consumable> getConsumables() {
+        return consumables;
     }
 
 }
