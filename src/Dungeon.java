@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,28 +16,50 @@ public class Dungeon {
      * @param generetedRooms
      */
     public Dungeon(String name, int generetedRooms) {
-        // TODO implement here
+        this.name = name;
+
+        this.rooms = new ArrayList<>();
+        for (int i = 0; i < generetedRooms; i++)
+            this.rooms.add(new Room(i, i * 2, i * i, i * 1.5));
+
+        this.present = false;
     }
 
     /**
      *
      */
     public void enter() {
-        // TODO implement here
+        if (this.rooms.size() > 0) {
+            this.present = true;
+            this.currentRoom = this.rooms.get(0);
+        } else
+            System.out.println("Il n'y a pas de salle dans ce donjon.");
     }
 
     /**
      *
      */
     public void leave() {
-        // TODO implement here
+        if (this.currentRoom == null)
+            System.out.println("Vous n'êtes pas dans un donjon");
+        else {
+            this.present = false;
+            this.currentRoom = null;
+        }
     }
 
     /**
      *
      */
     public void nextRoom() {
-        // TODO implement here
+        // Check si c'est la dernière room
+        if (this.currentRoom == this.rooms.get(this.rooms.size() - 1)) {
+            System.out.println("Vous avez fini le donjon ! Vous appercevez enfin la lumière du jour au loin.");
+            System.out.println("... Vous voilà enfin sorti !");
+        } else {
+            // Passe à la room suivante
+            this.currentRoom = this.rooms.get(this.currentRoom.getNumber() + 1);
+        }
     }
 
     public String getName() {
