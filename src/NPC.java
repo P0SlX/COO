@@ -10,15 +10,29 @@ public abstract class NPC {
     /**
      *
      */
-    public void attack() {
-        // TODO implement here
+    public void attack(Heroe heroe) {
+        heroe.takeDamage(damage);
     }
 
     /**
      * @param amount
      */
     public void takeDamage(double amount) {
-        // TODO implement here
+        if (this.health < amount)
+            this.health = 0;
+        else
+            this.health -= amount;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public double getDamage() {
+        return damage;
+    }
 }

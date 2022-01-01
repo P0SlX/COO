@@ -19,7 +19,7 @@ public class Dungeon {
         this.name = name;
 
         this.rooms = new ArrayList<>();
-        for (int i = 0; i < generetedRooms; i++)
+        for (int i = 1; i <= generetedRooms; i++)
             this.rooms.add(new Room(i, i * 2, i * i, i * 1.5));
 
         this.present = false;

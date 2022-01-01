@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,6 @@ public class Room {
     private double rewardXP;
     private int rewardMoney;
     private double difficulty;
-    private Boolean finished;
     private List<NPC> npcs;
 
     /**
@@ -20,6 +20,22 @@ public class Room {
         this.rewardXP = rewardXP;
         this.rewardMoney = rewardMoney;
         this.difficulty = difficulty;
+
+        this.npcs = new ArrayList<>();
+        int nbChildClass = 3;   // Nombre de classes de NPC (à augmenter/diminuer si le nombre de classes change)
+
+        for (int i = 0; i < difficulty; i++) {
+            int choice = (int) Math.floor(Math.random() * nbChildClass);
+            String name = Game.NAMES[(int) Math.floor(Math.random() * 20)]; // On va prendre un nom aléatoire
+
+            switch (choice) {
+                // Peut être multiplier la vie/dégat en fonction de la difficulté ?
+                // À voir comment équilibrer ca après...
+                case 0 -> this.npcs.add(new Bunny(name, 3, 1));
+                case 1 -> this.npcs.add(new Skeleton(name, 5, 3));
+                case 2 -> this.npcs.add(new Zombie(name, 6, 5));
+            }
+        }
     }
 
     public int getNumber() {
@@ -52,14 +68,6 @@ public class Room {
 
     public void setDifficulty(double difficulty) {
         this.difficulty = difficulty;
-    }
-
-    public Boolean getFinished() {
-        return finished;
-    }
-
-    public void setFinished(Boolean finished) {
-        this.finished = finished;
     }
 
     public List<NPC> getNpcs() {

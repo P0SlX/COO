@@ -9,7 +9,9 @@ public class Skeleton extends NPC {
      * @param damage
      */
     public Skeleton(String name, double health, double damage) {
-        // TODO implement here
+        this.name = name;
+        this.health = health;
+        this.damage = damage;
     }
 
 }

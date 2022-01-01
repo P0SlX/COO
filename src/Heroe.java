@@ -57,7 +57,10 @@ public abstract class Heroe {
      * @param amount: the amount of damage to take
      */
     public void takeDamage(double amount) {
-        health -= amount;
+        if (this.health < amount)
+            this.health = 0;
+        else
+            health -= amount;
     }
 
     /**

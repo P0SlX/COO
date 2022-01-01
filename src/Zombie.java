@@ -9,7 +9,9 @@ public class Zombie extends NPC {
      * @param damage
      */
     public Zombie(String name, double health, double damage) {
-        // TODO implement here
+        this.name = name;
+        this.health = health;
+        this.damage = damage;
     }
 
 }
