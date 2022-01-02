@@ -132,6 +132,7 @@ public class Game {
                 this.dungeon.reset();
                 this.heroe.getInventory().divide();
                 this.heroe.setHealth(1.0);
+                return;
             }
 
             // Choix possibles lorsque la pièce est finie.
