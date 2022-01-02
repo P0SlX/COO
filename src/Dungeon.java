@@ -58,7 +58,16 @@ public class Dungeon {
             System.out.println("... Vous voilà enfin sorti !");
         } else {
             // Passe à la room suivante
-            this.currentRoom = this.rooms.get(this.currentRoom.getNumber() + 1);
+            System.out.println("Vous avez toué tous les PNJs, vous passez à la salle suivante...");
+            this.currentRoom = this.rooms.get(this.currentRoom.getNumber());
+        }
+    }
+
+    public void reset() {
+        for (Room room : this.rooms) {
+            for (NPC npc: room.getNpcs()) {
+                npc.resetHealth();
+            }
         }
     }
 

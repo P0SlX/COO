@@ -3,6 +3,8 @@
  */
 public class Bunny extends NPC {
 
+    public static int INIT_HEALTH = 3;
+
     /**
      * @param name
      * @param health
@@ -12,5 +14,10 @@ public class Bunny extends NPC {
         this.name = name;
         this.health = health;
         this.damage = damage;
+    }
+
+    @Override
+    public void resetHealth() {
+        this.health = INIT_HEALTH;
     }
 }

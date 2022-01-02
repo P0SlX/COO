@@ -3,6 +3,8 @@
  */
 public class Zombie extends NPC {
 
+    public static int INIT_HEALTH = 6;
+
     /**
      * @param name
      * @param health
@@ -14,4 +16,9 @@ public class Zombie extends NPC {
         this.damage = damage;
     }
 
+    @Override
+    public void resetHealth() {
+        this.health = INIT_HEALTH;
+        System.out.println("fille");
+    }
 }

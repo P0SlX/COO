@@ -3,6 +3,8 @@
  */
 public class Skeleton extends NPC {
 
+    public static int INIT_HEALTH = 5;
+
     /**
      * @param name
      * @param health
@@ -14,4 +16,8 @@ public class Skeleton extends NPC {
         this.damage = damage;
     }
 
+    @Override
+    public void resetHealth() {
+        this.health = INIT_HEALTH;
+    }
 }

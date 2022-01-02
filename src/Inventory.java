@@ -39,6 +39,17 @@ public class Inventory {
         }
     }
 
+    public void divide() {
+        for (int i = 0; i < this.equipments.size(); i++)
+            if (i % 2 == 0)
+                this.remove(this.equipments.get(i));
+
+        for (int i = 0; i < this.consumables.size(); i++)
+            if (i % 2 == 0)
+                this.remove(this.consumables.get(i));
+
+    }
+
     public List<Equipment> getEquipments() {
         return equipments;
     }

@@ -9,4 +9,14 @@ public class Fight {
         this.heroe = heroe;
         this.npcs = npcs;
     }
+
+    public void heroeAttackNPC(int index) {
+        this.heroe.attack(this.npcs.get(index));
+    }
+
+    public void NPCsAttackHeroe() {
+        for (NPC npc: this.npcs)
+            if (npc.getHealth() > 0)
+                npc.attack(this.heroe);
+    }
 }

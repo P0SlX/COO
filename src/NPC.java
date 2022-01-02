@@ -3,6 +3,8 @@
  */
 public abstract class NPC {
 
+    public static int INIT_HEALTH = -1;
+
     protected String name;
     protected double health;
     protected double damage;
@@ -34,5 +36,12 @@ public abstract class NPC {
 
     public double getDamage() {
         return damage;
+    }
+
+    // Permet juste d'avoir accès à resetHealth() des méthodes filles
+    // Il met la vie a -1 pour pouvoir debugger plus facilement si d'autres
+    // classes de NPC sont ajoutés.
+    public void resetHealth() {
+        this.health = INIT_HEALTH;
     }
 }
