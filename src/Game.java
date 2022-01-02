@@ -95,7 +95,7 @@ public class Game {
         System.out.println("  - Plastron : " + (this.heroe.getArmor() == null ? "Aucun" : this.heroe.getArmor().getName()));
         System.out.println("  - Jambières : " + (this.heroe.getBoots() == null ? "Aucune" : this.heroe.getBoots().getName()));
     }
-    
+
     private boolean isDungeonFinished() {
         // Si c'est la dernière pièce
         if (this.dungeon.getCurrentRoom() == this.dungeon.getRooms().get(this.dungeon.getRooms().size() - 1))
@@ -136,10 +136,25 @@ public class Game {
             }
 
             // Choix possibles lorsque la pièce est finie.
-            if (this.dungeon.getCurrentRoom().isRoomFinished())
-                this.dungeon.nextRoom();
-                // TODO
-                //  Faire les choix possibles
+            if (this.dungeon.getCurrentRoom().isRoomFinished()) {
+                int choice2 = 0;
+                while (choice2 != 1 && choice2 != 2 && choice2 != 3) {
+                    System.out.println("oui");
+                    Scanner input2 = new Scanner(System.in);
+                    choice2 = input2.nextInt();
+                    switch (choice2) {
+                        case 1 -> this.dungeon.nextRoom();
+                        case 2 -> {
+                            this.viewInventory();
+                            choice2 = 0;    // Pour retourner à ce menu une fois l'inventaire consulté
+                        }
+                        case 3 -> {
+                            this.dungeon.reset();
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 

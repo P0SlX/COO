@@ -19,6 +19,5 @@ public class Zombie extends NPC {
     @Override
     public void resetHealth() {
         this.health = INIT_HEALTH;
-        System.out.println("fille");
     }
 }

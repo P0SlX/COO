@@ -59,16 +59,15 @@ public class Dungeon {
         } else {
             // Passe à la room suivante
             System.out.println("Vous avez toué tous les PNJs, vous passez à la salle suivante...");
-            this.currentRoom = this.rooms.get(this.currentRoom.getNumber());
+            // FIXME
+            this.currentRoom = this.rooms.get(this.currentRoom.getNumber() +1);
         }
     }
 
     public void reset() {
-        for (Room room : this.rooms) {
-            for (NPC npc: room.getNpcs()) {
+        for (Room room : this.rooms)
+            for (NPC npc: room.getNpcs())
                 npc.resetHealth();
-            }
-        }
     }
 
     public String getName() {
