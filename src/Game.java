@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -34,6 +36,9 @@ public class Game {
         Scanner input = new Scanner(System.in);
         System.out.println("\nVeuillez choisir un nom pour votre héro");
         String heroeName = input.nextLine();
+        this.clearScreen();
+        // TODO
+        //  Afficher les stats de chaque perso
         System.out.println("\nVeuillez choisir votre classe\n   1. Assassin\n   2. Sorcier\n   3. Barbare");
         int heroeClass = 0;
         while (heroeClass != 1 && heroeClass != 2 && heroeClass != 3) {
@@ -50,15 +55,35 @@ public class Game {
     /**
      *
      */
-    public void viewInventory() {
-        System.out.println("Affichage Inventaire");
-//        System.out.println("\nVotre inventaire :");
-//        for (Equipment item : heroe.getInventory().getEquipments()) {
-//            System.out.println(item.getName());
-//        }
-//        for (Consumable item : heroe.getInventory().getConsumables()) {
-//            System.out.println(item.getName());
-//        }
+    // TODO
+    public void viewInventory() throws InterruptedException {
+        Inventory inventory = this.heroe.getInventory();
+        List<Equipment> equipments = inventory.getEquipments();
+        List<Consumable> consumables = inventory.getConsumables();
+
+        // Inventaire vide
+        if (equipments.size() == 0 && consumables.size() == 0) {
+            System.out.println("Votre inventaire est vide.");
+            Thread.sleep(2000);
+            return;
+        }
+
+        System.out.println("\nVos équipements :");
+        for (Equipment item : equipments) {
+            System.out.println(item.getName() + " | ");
+        }
+
+        System.out.println("\nVos consommables :");
+        for (Consumable item : consumables) {
+            System.out.println(item.getName() + " | ");
+        }
+
+//        Thread.sleep(15000);
+    }
+
+    private void clearScreen() {
+        for (int i = 0; i < 50; i++)
+            System.out.println("\n");
     }
 
     private void displayNPCInRoom() {
@@ -89,7 +114,8 @@ public class Game {
     }
 
     private void displayHeroeInfo() {
-        System.out.println("Héro: " + this.heroe.getName() + " | " + this.heroe.getHealth() + " PV");
+        System.out.println("Héro: " + this.heroe.getName() + " | " + this.heroe.getHealth() + " PV | Niveau " + (int)this.heroe.getLevel() + " | Argent: " + this.heroe.getMoney());
+        System.out.println();
         System.out.println("Armure : ");
         System.out.println("  - Casque : " + (this.heroe.getHelmet() == null ? "Aucun" : this.heroe.getHelmet().getName()));
         System.out.println("  - Plastron : " + (this.heroe.getArmor() == null ? "Aucun" : this.heroe.getArmor().getName()));
@@ -103,15 +129,31 @@ public class Game {
         return false;
     }
 
+    private boolean roomFinished() throws InterruptedException {
+        int choice2 = 0;
+        while (choice2 != 1 && choice2 != 2 && choice2 != 3) {
+            System.out.println("oui");
+            Scanner input2 = new Scanner(System.in);
+            choice2 = input2.nextInt();
+            switch (choice2) {
+                case 1 -> this.dungeon.nextRoom();
+                case 2 -> {
+                    this.viewInventory();
+                    choice2 = 0;    // Pour retourner à ce menu une fois l'inventaire consulté
+                }
+                case 3 -> {
+                    this.dungeon.reset();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-    public void inDungeon() {
+    public void inDungeon() throws InterruptedException {
         while (!this.isDungeonFinished()) {
-            // Clear l'affichage pour faire plus propre
-            for (int i = 0; i < 1000; i++)
-                System.out.println("\n");
+            this.clearScreen();
 
-            // TODO
-            //  Faire un StringBuilder, et calculer centrer les sous-titres en dessous des titres
             System.out.println("\n---- Donjon " + this.dungeon.getName() + " / Salle " + this.dungeon.getCurrentRoom().getNumber() + " ----");
             this.displayHeroeInfo();
             this.displayNPCInRoom();
@@ -129,6 +171,11 @@ public class Game {
             // On pert une partie de l'inventaire
             // Et on met le héro à 1PV
             if (this.heroe.getHealth() <= 0) {
+                this.clearScreen();
+                System.out.println("\nVous êtes mort... ");
+                Thread.sleep(1500);
+                System.out.println("Votre corps est transporté hors du donjon et vous avez perdu la moitié de votre inventaire.");
+                Thread.sleep(4000);
                 this.dungeon.reset();
                 this.heroe.getInventory().divide();
                 this.heroe.setHealth(1.0);
@@ -136,33 +183,19 @@ public class Game {
             }
 
             // Choix possibles lorsque la pièce est finie.
-            if (this.dungeon.getCurrentRoom().isRoomFinished()) {
-                int choice2 = 0;
-                while (choice2 != 1 && choice2 != 2 && choice2 != 3) {
-                    System.out.println("oui");
-                    Scanner input2 = new Scanner(System.in);
-                    choice2 = input2.nextInt();
-                    switch (choice2) {
-                        case 1 -> this.dungeon.nextRoom();
-                        case 2 -> {
-                            this.viewInventory();
-                            choice2 = 0;    // Pour retourner à ce menu une fois l'inventaire consulté
-                        }
-                        case 3 -> {
-                            this.dungeon.reset();
-                            return;
-                        }
-                    }
-                }
-            }
+            if (this.dungeon.getCurrentRoom().isRoomFinished())
+                if (this.roomFinished())
+                    return;
         }
     }
 
-    public void mainMenu() {
+    public void mainMenu() throws InterruptedException {
         int choice;
         while (true) {
-            System.out.println("\n---- Menu principal ----\n");
-            System.out.println(" 1. Afficher l'inventaire");
+            this.clearScreen();
+            System.out.println("\n---- Menu principal ----");
+            this.displayHeroeInfo();
+            System.out.println("\n 1. Afficher l'inventaire");
             System.out.println(" 2. Rentrer dans le donjon");
             System.out.println(" 3. Quitter le jeu");
             Scanner input = new Scanner(System.in);

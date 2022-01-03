@@ -51,16 +51,17 @@ public class Dungeon {
     /**
      *
      */
-    public void nextRoom() {
+    public void nextRoom() throws InterruptedException {
         // Check si c'est la dernière room
         if (this.currentRoom == this.rooms.get(this.rooms.size() - 1)) {
             System.out.println("Vous avez fini le donjon ! Vous appercevez enfin la lumière du jour au loin.");
+            Thread.sleep(5000);
             System.out.println("... Vous voilà enfin sorti !");
+            Thread.sleep(3000);
+
         } else {
             // Passe à la room suivante
-            System.out.println("Vous avez toué tous les PNJs, vous passez à la salle suivante...");
-            // FIXME
-            this.currentRoom = this.rooms.get(this.currentRoom.getNumber() +1);
+            this.currentRoom = this.rooms.get(this.currentRoom.getNumber());
         }
     }
 
