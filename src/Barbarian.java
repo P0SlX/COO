@@ -8,10 +8,10 @@ public class Barbarian extends Heroe {
      */
     public Barbarian(String name) {
         this.name = name;
-        this.armor = new Protection("Armure en acier", 1.0, "armor");
-        this.helmet = new Protection("Casque en acier", 1.0, "helmet");
-        this.boots = new Protection("Bottes en acier", 1.0, "boots");
-        this.weapon = new Weapon("Hache en fer", 5.0);
+        this.armor = Game.PROTECTIONS[3];
+        this.helmet = Game.PROTECTIONS[0];
+        this.boots = Game.PROTECTIONS[6];
+        this.weapon = Game.WEAPONS[1];
         this.inventory = new Inventory();
     }
 

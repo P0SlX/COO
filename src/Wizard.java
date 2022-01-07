@@ -8,10 +8,10 @@ public class Wizard extends Heroe {
      */
     public Wizard(String name) {
         this.name = name;
-        this.armor = new Protection("Armure en fer", 0.5, "armor");
+        this.armor = Game.PROTECTIONS[4];
         this.helmet = null;
-        this.boots = new Protection("Bottes en cuir", 0.5, "boots");
-        this.weapon = new Weapon("Épé en fer", 7.5);
+        this.boots = Game.PROTECTIONS[8];
+        this.weapon = Game.WEAPONS[2];
         this.inventory = new Inventory();
     }
 

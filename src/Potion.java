@@ -4,21 +4,15 @@
 public class Potion implements Consumable {
 
     private String name;
-    private String type;
-    private double value;
-    private int duration;
+    private double health;
 
     /**
      * @param name:     name of the potion
-     * @param type:     type of the potion
-     * @param value:    value of the potion
-     * @param duration: duration of the potion
+     * @param health:    value of the potion
      */
-    public Potion(String name, String type, double value, int duration) {
+    public Potion(String name, double health) {
         this.name = name;
-        this.type = type;
-        this.value = value;
-        this.duration = duration;
+        this.health = health;
     }
 
     public String getName() {
@@ -29,28 +23,12 @@ public class Potion implements Consumable {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    @Override
+    public double getHealth() {
+        return health;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setHealth(double health) {
+        this.health = health;
     }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
 }

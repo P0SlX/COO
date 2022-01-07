@@ -23,24 +23,51 @@ public abstract class Heroe {
     public void equipt(Equipment equipment) {
         if (equipment instanceof Protection) {
             switch (((Protection) equipment).getType()) {
-                case "armor" -> armor = (Protection) equipment;
-                case "helmet" -> helmet = (Protection) equipment;
-                case "boots" -> boots = (Protection) equipment;
+                case "armor" -> {
+                    if (this.armor != null)
+                        this.unequipped(this.armor);
+                    this.armor = (Protection) equipment;
+                }
+                case "helmet" -> {
+                    if (this.helmet != null)
+                        this.unequipped(this.helmet);
+                    this.helmet = (Protection) equipment;
+                }
+                case "boots" -> {
+                    if (this.boots != null)
+                        this.unequipped(this.boots);
+                    this.boots = (Protection) equipment;
+                }
             }
         } else if (equipment instanceof Weapon) {
-            weapon = (Weapon) equipment;
+            if (this.weapon != null)
+                this.unequipped(this.weapon);
+            this.weapon = (Weapon) equipment;
         }
     }
 
     /**
      * @param equipment: the equipment to unequipped
      */
-    public void unequipped(String equipment) {
-        switch (equipment) {
-            case "armor" -> armor = null;
-            case "helmet" -> helmet = null;
-            case "boots" -> boots = null;
-            case "weapon" -> weapon = null;
+    public void unequipped(Equipment equipment) {
+        if (equipment instanceof Protection) {
+            switch (((Protection) equipment).getType()) {
+                case "armor" -> {
+                    this.inventory.add(this.armor);
+                    this.armor = null;
+                }
+                case "helmet" -> {
+                    this.inventory.add(this.helmet);
+                    this.helmet = null;
+                }
+                case "boots" -> {
+                    this.inventory.add(this.boots);
+                    this.boots = null;
+                }
+            }
+        } else if (equipment instanceof Weapon) {
+            this.inventory.add(weapon);
+            this.weapon = null;
         }
     }
 
@@ -48,15 +75,28 @@ public abstract class Heroe {
      * @param consumable: the consumable to use
      */
     public void use(Consumable consumable) {
-        if (consumable instanceof Food) {
-            health += ((Food) consumable).getHealth();
-        }
+        if (consumable.getHealth() + this.health > 100.0)
+            this.health = 100.0;
+        else
+            health += consumable.getHealth();
+        this.inventory.remove(consumable);
     }
 
     /**
      * @param amount: the amount of damage to take
      */
     public void takeDamage(double amount) {
+
+        if (this.helmet != null)
+            amount *= this.helmet.getArmor();
+
+        if (this.armor != null)
+            amount *= this.armor.getArmor();
+
+        if (this.boots != null)
+            amount *= this.boots.getArmor();
+
+
         if (this.health < amount)
             this.health = 0;
         else

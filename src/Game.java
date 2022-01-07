@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -8,13 +6,44 @@ import java.util.Scanner;
  */
 public class Game {
 
-    public static Map<String, Double> WEAPONS = Map.of("Dague en fer", 10.0, "Hache en fer", 5.0, "Épé en fer", 7.5);
+    public static Weapon[] WEAPONS = {
+            new Weapon("Dague en fer", 10.0),
+            new Weapon("Hache en fer", 5.0),
+            new Weapon("Épé en fer", 7.5)
+    };
 
-    public static Map<String, Map<String, Object>> PROTECTIONS;
+    // 9
+    public static Protection[] PROTECTIONS = {
+            new Protection("Casque en acier", 0.5, "helmet"),
+            new Protection("Casque en fer", 0.7, "helmet"),
+            new Protection("Casque en cuir", 0.9, "helmet"),
 
-    public static Map<String, Map<String, Object>> FOODS;
+            new Protection("Armure en acier", 0.5, "armor"),
+            new Protection("Armure en fer", 0.7, "armor"),
+            new Protection("Armure en cuir", 0.9, "armor"),
 
-    public static Map<String, Map<String, Object>> POTIONS;
+            new Protection("Bottes en acier", 0.5, "boots"),
+            new Protection("Bottes en fer", 0.7, "boots"),
+            new Protection("Bottes en cuir", 0.9, "boots"),
+    };
+
+    public static Food[] FOODS = {
+            new Food("Pomme", 5), new Food("Tartelette", 30), new Food("Tuc", 1),
+            new Food("Snickers", 10), new Food("Pizza", 25), new Food("Canette", 7),
+            new Food("Beignet", 8), new Food("Donut", 7), new Food("Couscous", 40)
+    };
+
+    // 8
+    public static Potion[] POTIONS = {
+            new Potion("Potion du Crous", 1),
+            new Potion("Potion de base", 10),
+            new Potion("Potion de base ++", 11),
+            new Potion("Potion Plus", 20),
+            new Potion("Potion Premium", 30),
+            new Potion("Potion Max", 40),
+            new Potion("Potion Pro Max", 50),
+            new Potion("Potion Pro Max X", 100),
+    };
 
     public static String[] NAMES = {"Drivreni", "Ogazdik", "Vomonnak", "Drevoh", "Tondagen", "Jendal", "Ergolor", "Petlar", "Ersalor", "Ellar", "Rezdil", "Dranbah", "Lenbul", "Vunnezot", "Zazza", "Bolmil", "Liagwyn", "Zylynore", "Orisatra", "Zylrora"};
 
@@ -37,8 +66,6 @@ public class Game {
         System.out.println("\nVeuillez choisir un nom pour votre héro");
         String heroeName = input.nextLine();
         this.clearScreen();
-        // TODO
-        //  Afficher les stats de chaque perso
         System.out.println("\nVeuillez choisir votre classe\n   1. Assassin\n   2. Sorcier\n   3. Barbare");
         int heroeClass = 0;
         while (heroeClass != 1 && heroeClass != 2 && heroeClass != 3) {
@@ -50,35 +77,66 @@ public class Game {
                 default -> System.out.println("\nVeuillez choisir une classe valide\n   1. Assassin\n   2. Sorcier\n   3. Barbare");
             }
         }
+        this.heroe.inventory.add(POTIONS[1]);
     }
 
     /**
      *
      */
-    // TODO
     public void viewInventory() throws InterruptedException {
+        this.clearScreen();
         Inventory inventory = this.heroe.getInventory();
         List<Equipment> equipments = inventory.getEquipments();
         List<Consumable> consumables = inventory.getConsumables();
 
-        // Inventaire vide
-        if (equipments.size() == 0 && consumables.size() == 0) {
-            System.out.println("Votre inventaire est vide.");
-            Thread.sleep(2000);
-            return;
-        }
 
-        System.out.println("\nVos équipements :");
-        for (Equipment item : equipments) {
-            System.out.println(item.getName() + " | ");
-        }
+        int choice = 0;
+        while (choice != 1 && choice != 2 && choice != 3) {
+            // Inventaire vide
+            if (equipments.size() == 0 && consumables.size() == 0) {
+                System.out.println("Votre inventaire est vide.");
+                Thread.sleep(1500);
+                return;
+            }
 
-        System.out.println("\nVos consommables :");
-        for (Consumable item : consumables) {
-            System.out.println(item.getName() + " | ");
-        }
+            System.out.print("\nVos équipements :\n| ");
+            for (int i = 0; i < equipments.size(); i++) {
+                Equipment equipment = equipments.get(i);
+                System.out.print("(" + (i + 1) + ") " + equipment.getName() + " | ");
+            }
 
-//        Thread.sleep(15000);
+            System.out.print("\n\nVos consommables :\n| ");
+            for (int i = 0; i < consumables.size(); i++) {
+                Consumable consumable = consumables.get(i);
+                System.out.print("(" + (i + 1) + ") " + consumable.getName() + " | ");
+            }
+
+            System.out.println("\n\n1. Équiper un équipement");
+            System.out.println("2. Utiliser un consommables");
+            System.out.println("3. Jeter un équipement");
+            System.out.println("4. Jeter un consommables");
+            System.out.println("5. Quitter l'inventaire");
+
+            Scanner input = new Scanner(System.in);
+            choice = input.nextInt();
+
+            if (choice > 0 && choice < 5)
+                System.out.print("Numéro : ");
+            else if (choice == 5)
+                return;
+
+            try {
+                switch (choice) {
+                    case 1 -> this.heroe.equipt(equipments.get((new Scanner(System.in).nextInt()) - 1));
+                    case 2 -> this.heroe.use(consumables.get((new Scanner(System.in).nextInt()) - 1));
+                    case 3 -> this.heroe.inventory.getEquipments().remove(equipments.get((new Scanner(System.in).nextInt()) - 1));
+                    case 4 -> this.heroe.inventory.getConsumables().remove(consumables.get((new Scanner(System.in).nextInt()) - 1));
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Objet inexistant...");
+            }
+            choice = 0;
+        }
     }
 
     private void clearScreen() {
@@ -114,7 +172,7 @@ public class Game {
     }
 
     private void displayHeroeInfo() {
-        System.out.println("Héro: " + this.heroe.getName() + " | " + this.heroe.getHealth() + " PV | Niveau " + (int)this.heroe.getLevel() + " | Argent: " + this.heroe.getMoney());
+        System.out.println("Héro: " + this.heroe.getName() + " | " + this.heroe.getHealth() + " PV | Niveau " + (int) this.heroe.getLevel() + " | Argent: " + this.heroe.getMoney());
         System.out.println();
         System.out.println("Armure : ");
         System.out.println("  - Casque : " + (this.heroe.getHelmet() == null ? "Aucun" : this.heroe.getHelmet().getName()));
@@ -132,7 +190,9 @@ public class Game {
     private boolean roomFinished() throws InterruptedException {
         int choice2 = 0;
         while (choice2 != 1 && choice2 != 2 && choice2 != 3) {
-            System.out.println("oui");
+            System.out.println("\n1. Salle suivante");
+            System.out.println("2. Voir l'inventaire");
+            System.out.println("3. Sortir du donjon");
             Scanner input2 = new Scanner(System.in);
             choice2 = input2.nextInt();
             switch (choice2) {

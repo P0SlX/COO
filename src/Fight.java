@@ -21,8 +21,6 @@ public class Fight {
             this.heroe.setLevel(this.heroe.getLevel() + xp);
             this.heroe.setMoney(this.heroe.getMoney() + money);
         }
-        // TODO
-        //  Drop d'item aléatoirement
     }
 
     public void NPCsAttackHeroe() {
