@@ -6,16 +6,19 @@ public class Protection implements Equipment {
     private String name;
     private double armor;
     private String type;
+    private int price;
 
     /**
      * @param name:  name of the protection
      * @param armor: protection bonus
      * @param type:  protection type
+     * @param price: price of the protection
      */
-    public Protection(String name, double armor, String type) {
+    public Protection(String name, double armor, String type, int price) {
         this.name = name;
         this.armor = armor;
         this.type = type;
+        this.price = price;
     }
 
     public String getName() {
@@ -42,4 +45,12 @@ public class Protection implements Equipment {
         this.type = type;
     }
 
+    @Override
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }

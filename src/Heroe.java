@@ -27,22 +27,26 @@ public abstract class Heroe {
                     if (this.armor != null)
                         this.unequipped(this.armor);
                     this.armor = (Protection) equipment;
+                    this.inventory.remove(this.armor);
                 }
                 case "helmet" -> {
                     if (this.helmet != null)
                         this.unequipped(this.helmet);
                     this.helmet = (Protection) equipment;
+                    this.inventory.remove(this.helmet);
                 }
                 case "boots" -> {
                     if (this.boots != null)
                         this.unequipped(this.boots);
                     this.boots = (Protection) equipment;
+                    this.inventory.remove(this.boots);
                 }
             }
         } else if (equipment instanceof Weapon) {
             if (this.weapon != null)
                 this.unequipped(this.weapon);
             this.weapon = (Weapon) equipment;
+            this.inventory.remove(this.weapon);
         }
     }
 

@@ -58,4 +58,20 @@ public class Inventory {
         return consumables;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        res.append("\nVos équipements :\n| ");
+        for (int i = 0; i < equipments.size(); i++) {
+            Equipment equipment = equipments.get(i);
+            res.append("(").append(i + 1).append(") ").append(equipment.getName()).append(" | ");
+        }
+
+        res.append("\nVos consommables :\n| ");
+        for (int i = 0; i < consumables.size(); i++) {
+            Consumable consumable = consumables.get(i);
+            res.append("(").append(i + 1).append(") ").append(consumable.getName()).append(" | ");
+        }
+        return res.toString();
+    }
 }

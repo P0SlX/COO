@@ -1,3 +1,4 @@
+import java.awt.event.WindowAdapter;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -8,43 +9,49 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Game {
 
     public static Weapon[] WEAPONS = {
-            new Weapon("Dague en fer", 10.0),
-            new Weapon("Hache en fer", 5.0),
-            new Weapon("Épé en fer", 7.5)
+            new Weapon("Dague en fer", 10.0, 150),
+            new Weapon("Hache en fer", 5.0, 75),
+            new Weapon("Épé en fer", 7.5, 100)
     };
 
     // 9
     public static Protection[] PROTECTIONS = {
-            new Protection("Casque en acier", 0.5, "helmet"),
-            new Protection("Casque en fer", 0.7, "helmet"),
-            new Protection("Casque en cuir", 0.9, "helmet"),
+            new Protection("Casque en acier", 0.5, "helmet", 500),
+            new Protection("Casque en fer", 0.7, "helmet", 250),
+            new Protection("Casque en cuir", 0.9, "helmet", 100),
 
-            new Protection("Armure en acier", 0.5, "armor"),
-            new Protection("Armure en fer", 0.7, "armor"),
-            new Protection("Armure en cuir", 0.9, "armor"),
+            new Protection("Armure en acier", 0.5, "armor", 500),
+            new Protection("Armure en fer", 0.7, "armor", 250),
+            new Protection("Armure en cuir", 0.9, "armor", 100),
 
-            new Protection("Bottes en acier", 0.5, "boots"),
-            new Protection("Bottes en fer", 0.7, "boots"),
-            new Protection("Bottes en cuir", 0.9, "boots"),
+            new Protection("Bottes en acier", 0.5, "boots", 500),
+            new Protection("Bottes en fer", 0.7, "boots", 250),
+            new Protection("Bottes en cuir", 0.9, "boots", 100),
     };
 
     // 9
     public static Food[] FOODS = {
-            new Food("Pomme", 5), new Food("Tartelette", 30), new Food("Tuc", 1),
-            new Food("Snickers", 10), new Food("Pizza du Crous", 25), new Food("Canette", 7),
-            new Food("Beignet", 8), new Food("Donut", 7), new Food("Couscous", 40)
+            new Food("Pomme", 5, 10),
+            new Food("Tartelette", 30, 60),
+            new Food("Tuc", 1, 2),
+            new Food("Snickers", 10, 20),
+            new Food("Pizza du Crous", 25, 50),
+            new Food("Canette", 7, 14),
+            new Food("Beignet", 8, 16),
+            new Food("Donut", 7, 14),
+            new Food("Couscous", 40, 80)
     };
 
     // 8
     public static Potion[] POTIONS = {
-            new Potion("Potion du Crous", 1),
-            new Potion("Potion de base", 10),
-            new Potion("Potion de base ++", 11),
-            new Potion("Potion Plus", 20),
-            new Potion("Potion Premium", 30),
-            new Potion("Potion Max", 40),
-            new Potion("Potion Pro Max", 50),
-            new Potion("Potion Pro Max X", 100),
+            new Potion("Potion du Crous", 1, 2),
+            new Potion("Potion de base", 10, 20),
+            new Potion("Potion de base ++", 11, 22),
+            new Potion("Potion Plus", 20, 40),
+            new Potion("Potion Premium", 30, 60),
+            new Potion("Potion Max", 40, 80),
+            new Potion("Potion Pro Max", 50, 100),
+            new Potion("Potion Pro Max X", 100, 200),
     };
 
     public static String[] NAMES = {"Drivreni", "Ogazdik", "Vomonnak", "Drevoh", "Tondagen", "Jendal", "Ergolor", "Petlar", "Ersalor", "Ellar", "Rezdil", "Dranbah", "Lenbul", "Vunnezot", "Zazza", "Bolmil", "Liagwyn", "Zylynore", "Orisatra", "Zylrora"};
@@ -103,17 +110,8 @@ public class Game {
                 return;
             }
 
-            System.out.print("\nVos équipements :\n| ");
-            for (int i = 0; i < equipments.size(); i++) {
-                Equipment equipment = equipments.get(i);
-                System.out.print("(" + (i + 1) + ") " + equipment.getName() + " | ");
-            }
-
-            System.out.print("\n\nVos consommables :\n| ");
-            for (int i = 0; i < consumables.size(); i++) {
-                Consumable consumable = consumables.get(i);
-                System.out.print("(" + (i + 1) + ") " + consumable.getName() + " | ");
-            }
+            this.displayHeroeInfo();
+            System.out.println(inventory);
 
             System.out.println("\n\n1. Équiper un équipement");
             System.out.println("2. Utiliser un consommables");
@@ -177,11 +175,12 @@ public class Game {
 
     private void displayHeroeInfo() {
         System.out.println("Héro: " + this.heroe.getName() + " | " + this.heroe.getHealth() + " PV | Niveau " + (int) this.heroe.getLevel() + " | Argent: " + this.heroe.getMoney());
-        System.out.println();
+        System.out.println("\nArme : " + (this.heroe.getWeapon() == null ? "Aucune" : this.heroe.getWeapon().getName()));
         System.out.println("Armure : ");
         System.out.println("  - Casque : " + (this.heroe.getHelmet() == null ? "Aucun" : this.heroe.getHelmet().getName()));
         System.out.println("  - Plastron : " + (this.heroe.getArmor() == null ? "Aucun" : this.heroe.getArmor().getName()));
         System.out.println("  - Jambières : " + (this.heroe.getBoots() == null ? "Aucune" : this.heroe.getBoots().getName()));
+
     }
 
     private boolean isDungeonFinished() {
@@ -215,9 +214,9 @@ public class Game {
     }
 
     private void reward() {
-        this.heroe.inventory.add(FOODS[ThreadLocalRandom.current().nextInt(0, 9)]);
-        this.heroe.inventory.add(POTIONS[ThreadLocalRandom.current().nextInt(0, 7)]);
-        this.heroe.inventory.add(POTIONS[ThreadLocalRandom.current().nextInt(0, 7)]);
+        this.heroe.inventory.add(FOODS[ThreadLocalRandom.current().nextInt(0, FOODS.length)]);
+        this.heroe.inventory.add(POTIONS[ThreadLocalRandom.current().nextInt(0, POTIONS.length)]);
+        this.heroe.inventory.add(POTIONS[ThreadLocalRandom.current().nextInt(0, POTIONS.length)]);
     }
 
     public void inDungeon() throws InterruptedException {
@@ -260,6 +259,84 @@ public class Game {
         this.reward();
     }
 
+    private void shop() {
+        int choice = 0;
+        while (choice != 1 && choice != 2 && choice != 3 && choice != 4) {
+            this.clearScreen();
+            System.out.println("\n====================");
+            System.out.print("Argent : " + this.heroe.getMoney());
+            System.out.println(this.heroe.inventory);
+            System.out.println("\n====================");
+
+            System.out.print("\n\nArmes :\n| ");
+            for (int i = 0; i < WEAPONS.length; i++) {
+                if (i % 3 == 0 && i != 0)
+                    System.out.print("\n| ");
+                System.out.print("(" + (i + 1) + ") " + WEAPONS[i].getName() + " (" + WEAPONS[i].getDamage() + " pts de dégats) | ");
+            }
+
+            System.out.print("\n\nProtections :\n| ");
+            for (int i = 0; i < PROTECTIONS.length; i++) {
+                if (i % 3 == 0 && i != 0)
+                    System.out.print("\n| ");
+                System.out.print("(" + (i + 1) + ") " + PROTECTIONS[i].getName() + " (" + PROTECTIONS[i].getArmor() + "x) | ");
+            }
+
+            System.out.print("\n\nNourriture :\n| ");
+            for (int i = 0; i < FOODS.length; i++) {
+                if (i % 3 == 0 && i != 0)
+                    System.out.print("\n| ");
+                System.out.print("(" + (i + 1) + ") " + FOODS[i].getName() + " (+" + FOODS[i].getHealth() + "PV) | ");
+            }
+
+            System.out.print("\n\nPotions :\n| ");
+            for (int i = 0; i < POTIONS.length; i++) {
+                if (i % 3 == 0 && i != 0)
+                    System.out.print("\n| ");
+                System.out.print("(" + (i + 1) + ") " + POTIONS[i].getName() + " (" + POTIONS[i].getHealth() + "x) | ");
+            }
+
+            System.out.println("\n\n1. Acheter une arme");
+            System.out.println("2. Acheter une protection");
+            System.out.println("3. Acheter de la nourriture");
+            System.out.println("4. Acheter une potion");
+            System.out.println("5. Sortir de chez le marchand");
+
+            Scanner input = new Scanner(System.in);
+            choice = input.nextInt();
+
+            if (choice > 0 && choice < 5)
+                System.out.print("Numéro : ");
+            else if (choice == 5)
+                return;
+
+            try {
+                int index = (new Scanner(System.in).nextInt()) - 1;
+                switch (choice) {
+                    case 1 -> {
+                        this.heroe.inventory.add(WEAPONS[index]);
+                        this.heroe.setMoney(this.heroe.getMoney() - WEAPONS[index].getPrice());
+                    }
+                    case 2 -> {
+                        this.heroe.inventory.add(PROTECTIONS[index]);
+                        this.heroe.setMoney(this.heroe.getMoney() - PROTECTIONS[index].getPrice());
+                    }
+                    case 3 -> {
+                        this.heroe.inventory.add(FOODS[index]);
+                        this.heroe.setMoney(this.heroe.getMoney() - FOODS[index].getPrice());
+                    }
+                    case 4 -> {
+                        this.heroe.inventory.add(POTIONS[index]);
+                        this.heroe.setMoney(this.heroe.getMoney() - POTIONS[index].getPrice());
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Objet inexistant...");
+            }
+            choice = 0;
+        }
+    }
+
     public void mainMenu() throws InterruptedException {
         int choice;
         while (true) {
@@ -268,7 +345,8 @@ public class Game {
             this.displayHeroeInfo();
             System.out.println("\n 1. Afficher l'inventaire");
             System.out.println(" 2. Rentrer dans le donjon");
-            System.out.println(" 3. Quitter le jeu");
+            System.out.println(" 3. Aller chez le marchand");
+            System.out.println(" 4. Quitter le jeu");
             Scanner input = new Scanner(System.in);
             choice = input.nextInt();
             switch (choice) {
@@ -277,7 +355,8 @@ public class Game {
                     this.dungeon.enter();
                     this.inDungeon();
                 }
-                case 3 -> {
+                case 3 -> this.shop();
+                case 4 -> {
                     return;
                 }
                 default -> System.out.println("Veuillez faire un choix valide.");
