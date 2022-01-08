@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -69,6 +70,7 @@ public class Dungeon {
         for (Room room : this.rooms)
             for (NPC npc: room.getNpcs())
                 npc.resetHealth();
+        this.leave();
     }
 
     public String getName() {

@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -27,9 +28,10 @@ public class Game {
             new Protection("Bottes en cuir", 0.9, "boots"),
     };
 
+    // 9
     public static Food[] FOODS = {
             new Food("Pomme", 5), new Food("Tartelette", 30), new Food("Tuc", 1),
-            new Food("Snickers", 10), new Food("Pizza", 25), new Food("Canette", 7),
+            new Food("Snickers", 10), new Food("Pizza du Crous", 25), new Food("Canette", 7),
             new Food("Beignet", 8), new Food("Donut", 7), new Food("Couscous", 40)
     };
 
@@ -77,7 +79,9 @@ public class Game {
                 default -> System.out.println("\nVeuillez choisir une classe valide\n   1. Assassin\n   2. Sorcier\n   3. Barbare");
             }
         }
+        this.heroe.inventory.add(POTIONS[0]);
         this.heroe.inventory.add(POTIONS[1]);
+        this.heroe.inventory.add(FOODS[4]);
     }
 
     /**
@@ -210,6 +214,12 @@ public class Game {
         return false;
     }
 
+    private void reward() {
+        this.heroe.inventory.add(FOODS[ThreadLocalRandom.current().nextInt(0, 9)]);
+        this.heroe.inventory.add(POTIONS[ThreadLocalRandom.current().nextInt(0, 7)]);
+        this.heroe.inventory.add(POTIONS[ThreadLocalRandom.current().nextInt(0, 7)]);
+    }
+
     public void inDungeon() throws InterruptedException {
         while (!this.isDungeonFinished()) {
             this.clearScreen();
@@ -247,6 +257,7 @@ public class Game {
                 if (this.roomFinished())
                     return;
         }
+        this.reward();
     }
 
     public void mainMenu() throws InterruptedException {
