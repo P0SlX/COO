@@ -1,4 +1,3 @@
-import java.awt.event.WindowAdapter;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
