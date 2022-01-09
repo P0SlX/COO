@@ -7,9 +7,6 @@ public abstract class Heroe {
     protected double health = 100.0;
     protected int money = 1000;
     protected double level = 0.0;
-    protected double strength = 1.0;
-    protected double intelligence = 1.0;
-    protected double speed = 1.0;
     protected Protection armor;
     protected Protection helmet;
     protected Protection boots;
@@ -146,30 +143,6 @@ public abstract class Heroe {
         this.level = level;
     }
 
-    public double getStrength() {
-        return strength;
-    }
-
-    public void setStrength(double strength) {
-        this.strength = strength;
-    }
-
-    public double getIntelligence() {
-        return intelligence;
-    }
-
-    public void setIntelligence(double intelligence) {
-        this.intelligence = intelligence;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
     public Protection getArmor() {
         return armor;
     }
@@ -213,5 +186,4 @@ public abstract class Heroe {
     public Inventory getInventory() {
         return inventory;
     }
-
 }

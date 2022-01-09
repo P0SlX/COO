@@ -21,7 +21,7 @@ public class Dungeon {
 
         this.rooms = new ArrayList<>();
         for (int i = 1; i <= generetedRooms; i++)
-            this.rooms.add(new Room(i, i * 2, i * i, i * 1.5));
+            this.rooms.add(new Room(i, (double) i / 4, i * i, i * 1.5));
 
         this.present = false;
     }

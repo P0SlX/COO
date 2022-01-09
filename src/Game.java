@@ -190,6 +190,8 @@ public class Game {
     }
 
     private boolean roomFinished() throws InterruptedException {
+        this.heroe.setMoney(this.heroe.dungeon.getCurrentRoom().getRewardMoney() + this.heroe.getMoney());
+        this.heroe.setLevel(this.heroe.dungeon.getCurrentRoom().getRewardXP() + this.heroe.getLevel());
         int choice2 = 0;
         while (choice2 != 1 && choice2 != 2 && choice2 != 3) {
             System.out.println("\n1. Salle suivante");
